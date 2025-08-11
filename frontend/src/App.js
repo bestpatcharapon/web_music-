@@ -11,7 +11,9 @@ function App() {
   const [error, setError] = useState(null);
 
   // Backend URL - change if your backend is hosted elsewhere
-  const BACKEND_URL = 'http://localhost:5000';
+  const BACKEND_URL = process.env.NODE_ENV === 'production' 
+  ? process.env.REACT_APP_API_URL || 'https://your-railway-app.railway.app'
+  : 'http://localhost:5000';
 
   const getRecommendations = async (text) => {
     setIsLoading(true);

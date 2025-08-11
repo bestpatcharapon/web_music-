@@ -11,7 +11,14 @@ from spotify import search_tracks, get_spotify_token
 load_dotenv()
 
 app = Flask(__name__)
-CORS(app)  # Enable CORS for frontend integration
+
+# Update CORS for production
+if os.environ.get('RAILWAY_ENVIRONMENT'):
+    # In production, allow your Vercel domain
+    CORS(app, origins=['https://*.vercel.app', 'https://your-app-name.vercel.app'])
+else:
+    # In development, allow all origins
+    CORS(app)
 
 # Initialize Spotify credentials
 client_id = os.environ.get('SPOTIFY_CLIENT_ID')
@@ -57,5 +64,6 @@ if __name__ == '__main__':
     if not client_id or not client_secret:
         print("Warning: Spotify credentials not set. Please set SPOTIFY_CLIENT_ID and SPOTIFY_CLIENT_SECRET environment variables.")
     
-    # Start the Flask app
-    app.run(debug=True)
+    # Start the Flask app - Railway will provide PORT
+    port = int(os.environ.get('PORT', 5000))
+    app.run(host='0.0.0.0', port=port, debug=False)
