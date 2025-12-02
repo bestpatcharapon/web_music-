@@ -1,4 +1,3 @@
-```
 # Enhanced keyword-based text analysis (no AI required)
 import re
 
