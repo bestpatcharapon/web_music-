@@ -6,20 +6,20 @@
   --card-bg-light: linear-gradient(145deg, #e6e6e6 0%, #f5f5f5 100%);
   --text-color-light: #121212;
   --text-secondary-light: #555555;
-  --accent-color-light: #1DB954;
+  --accent-color-light: #1db954;
   --accent-hover-light: #1ed760;
   --input-bg-light: rgba(0, 0, 0, 0.05);
   --input-border-light: rgba(0, 0, 0, 0.1);
   --card-shadow-light: 0 8px 16px rgba(0, 0, 0, 0.1);
   --divider-light: rgba(0, 0, 0, 0.1);
-  
+
   /* Dark theme variables */
   --bg-color-dark: #121212;
   --bg-gradient-dark: linear-gradient(135deg, #121212 0%, #181818 100%);
   --card-bg-dark: linear-gradient(145deg, #232323 0%, #282828 100%);
   --text-color-dark: #ffffff;
   --text-secondary-dark: #b3b3b3;
-  --accent-color-dark: #1DB954;
+  --accent-color-dark: #1db954;
   --accent-hover-dark: #1ed760;
   --input-bg-dark: rgba(255, 255, 255, 0.1);
   --input-border-dark: rgba(255, 255, 255, 0.1);
@@ -59,7 +59,7 @@ body[data-theme="light"] {
 
 /* Base styles */
 body {
-  font-family: 'Circular', 'Segoe UI', 'Roboto', sans-serif;
+  font-family: "Circular", "Segoe UI", "Roboto", sans-serif;
   margin: 0;
   padding: 0;
   background: var(--bg-gradient);
@@ -115,7 +115,11 @@ body {
 .App-header h1 {
   font-size: 3.2rem;
   font-weight: 700;
-  background: linear-gradient(to right, var(--accent-color), var(--accent-hover));
+  background: linear-gradient(
+    to right,
+    var(--accent-color),
+    var(--accent-hover)
+  );
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -173,7 +177,11 @@ textarea::placeholder {
 }
 
 button {
-  background: linear-gradient(to right, var(--accent-color), var(--accent-hover));
+  background: linear-gradient(
+    to right,
+    var(--accent-color),
+    var(--accent-hover)
+  );
   color: white;
   border: none;
   padding: 14px 28px;
@@ -225,18 +233,32 @@ button:disabled {
   padding-left: 5px;
 }
 
-.examples li a {
+.examples li a,
+.examples li button.example-link {
   color: var(--text-secondary);
   text-decoration: none;
   transition: color 0.2s ease;
   position: relative;
+  background: none;
+  border: none;
+  padding: 0;
+  font-size: 15px;
+  cursor: pointer;
+  text-align: left;
+  font-family: inherit;
+  box-shadow: none;
 }
 
-.examples li a:hover {
+.examples li a:hover,
+.examples li button.example-link:hover {
   color: var(--accent-color);
+  background: none;
+  transform: none;
+  box-shadow: none;
 }
 
-.examples li a:before {
+.examples li a:before,
+.examples li button.example-link:before {
   content: "•";
   color: var(--accent-color);
   display: inline-block;
@@ -252,9 +274,15 @@ button:disabled {
 }
 
 @keyframes pulse {
-  0% { opacity: 0.6; }
-  50% { opacity: 1; }
-  100% { opacity: 0.6; }
+  0% {
+    opacity: 0.6;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.6;
+  }
 }
 
 .analysis-results {
@@ -297,7 +325,11 @@ button:disabled {
 }
 
 .emotion-tag.sentiment {
-  background: linear-gradient(to right, var(--accent-color), var(--accent-hover));
+  background: linear-gradient(
+    to right,
+    var(--accent-color),
+    var(--accent-hover)
+  );
   color: white;
   box-shadow: 0 4px 8px rgba(29, 185, 84, 0.25);
 }
@@ -347,7 +379,11 @@ button:disabled {
   transform: translateX(-50%);
   width: 60px;
   height: 3px;
-  background: linear-gradient(to right, var(--accent-color), var(--accent-hover));
+  background: linear-gradient(
+    to right,
+    var(--accent-color),
+    var(--accent-hover)
+  );
   border-radius: 3px;
 }
 
@@ -387,16 +423,20 @@ button:disabled {
   left: 0;
   right: 0;
   height: 60px;
-  background: linear-gradient(to top, 
-    rgba(40, 40, 40, 0.8), 
-    rgba(40, 40, 40, 0));
+  background: linear-gradient(
+    to top,
+    rgba(40, 40, 40, 0.8),
+    rgba(40, 40, 40, 0)
+  );
   z-index: 1;
 }
 
 body[data-theme="light"] .song-image:after {
-  background: linear-gradient(to top, 
-    rgba(245, 245, 245, 0.8), 
-    rgba(245, 245, 245, 0));
+  background: linear-gradient(
+    to top,
+    rgba(245, 245, 245, 0.8),
+    rgba(245, 245, 245, 0)
+  );
 }
 
 .song-image img {
@@ -460,7 +500,11 @@ body[data-theme="light"] .song-image:after {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(to right, var(--accent-color), var(--accent-hover));
+  background: linear-gradient(
+    to right,
+    var(--accent-color),
+    var(--accent-hover)
+  );
   color: white;
   text-decoration: none;
   padding: 12px;
@@ -555,20 +599,20 @@ footer {
   .App {
     padding: 15px;
   }
-  
+
   .App-header h1 {
     font-size: 2.5rem;
   }
-  
+
   .song-grid {
     grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
     gap: 20px;
   }
-  
+
   .song-image img {
     height: 220px;
   }
-  
+
   .theme-toggle-container {
     top: 10px;
     right: 10px;
@@ -579,23 +623,23 @@ footer {
   .App-header h1 {
     font-size: 2rem;
   }
-  
+
   .input-form {
     padding: 20px;
   }
-  
+
   .App {
     padding: 10px;
   }
-  
+
   .song-grid {
     grid-template-columns: 1fr;
   }
-  
+
   button {
     width: 100%;
   }
-  
+
   .theme-toggle-btn {
     width: 40px;
     height: 40px;
@@ -632,4 +676,3 @@ body[data-theme="light"] ::-webkit-scrollbar-thumb {
 body[data-theme="light"] ::-webkit-scrollbar-thumb:hover {
   background: var(--accent-color);
 }
-

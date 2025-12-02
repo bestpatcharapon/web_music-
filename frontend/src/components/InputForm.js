@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 
 function InputForm({ onSubmit, isLoading }) {
-  const [text, setText] = useState('');
+  const [text, setText] = useState("");
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -16,6 +16,11 @@ function InputForm({ onSubmit, isLoading }) {
     "I just broke up with my partner and need some comfort music",
     "Looking for energetic workout music for my morning run",
     "I want some calming music to help me sleep tonight",
+    "Road trip vibes! Looking for songs perfect for a long drive",
+    "Rainy day, feeling cozy and want some acoustic or indie music",
+    "Party tonight! Need high-energy dance music to pump everyone up",
+    "Sunday morning chill - looking for smooth jazz or lo-fi beats",
+    "Feeling confident and empowered, want songs that make me feel unstoppable",
   ];
 
   const handleExampleClick = (example) => {
@@ -35,17 +40,20 @@ function InputForm({ onSubmit, isLoading }) {
         />
       </div>
       <button type="submit" disabled={isLoading || !text.trim()}>
-        {isLoading ? 'Analyzing...' : 'Get Song Recommendations'}
+        {isLoading ? "Analyzing..." : "Get Song Recommendations"}
       </button>
       <div className="examples">
         <p>Try something like:</p>
         <ul>
           {examplePrompts.map((example, index) => (
             <li key={index}>
-              <a href="#" onClick={(e) => {
-                e.preventDefault();
-                handleExampleClick(example);
-              }}>{example}</a>
+              <button
+                type="button"
+                className="example-link"
+                onClick={() => handleExampleClick(example)}
+              >
+                {example}
+              </button>
             </li>
           ))}
         </ul>
