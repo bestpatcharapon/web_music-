@@ -79,6 +79,7 @@ def search_tracks(token, analysis_results):
             else:
                 keyword_groups.append(keywords[i])
     else:
+        keyword_groups = keywords
     
     # Add emotion-specific keywords if we have emotions
     if top_emotions:
