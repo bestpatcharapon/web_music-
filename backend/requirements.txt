@@ -1,9 +1,8 @@
-flask==2.3.0
-werkzeug==2.3.0
+fFlask==2.3.0
 flask-cors==3.0.10
+Werkzeug==2.3.0
+python-dotenv==1.0.0
 requests==2.31.0
-python-dotenv==0.19.0
 gunicorn==20.1.0
-# Lighter ML alternatives
 scikit-learn==1.3.0
 nltk==3.8.1

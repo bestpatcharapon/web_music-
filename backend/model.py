@@ -1,33 +1,30 @@
-# Simplified version using basic NLP
+```
+# Enhanced keyword-based text analysis (no AI required)
 import re
-from collections import Counter
 
 def analyze_text(text):
-    """Simple text analysis without heavy ML dependencies"""
+    """Enhanced keyword-based text analysis"""
     
-    # Basic emotion keywords
+    # Comprehensive emotion keywords
     emotion_keywords = {
-        'happy': ['happy', 'joy', 'excited', 'cheerful', 'upbeat', 'positive'],
-        'sad': ['sad', 'depressed', 'down', 'melancholy', 'blue', 'lonely'],
-        'angry': ['angry', 'mad', 'furious', 'rage', 'annoyed'],
-        'calm': ['calm', 'peaceful', 'relaxed', 'chill', 'serene'],
-        'energetic': ['energetic', 'pumped', 'hyped', 'active', 'dynamic']
+        'happy': ['happy', 'joy', 'excited', 'cheerful', 'upbeat', 'positive', 'celebrate', 'amazing', 'great', 'wonderful'],
+        'sad': ['sad', 'depressed', 'down', 'melancholy', 'blue', 'lonely', 'heartbroken', 'crying', 'miss', 'lost'],
+        'angry': ['angry', 'mad', 'furious', 'rage', 'annoyed', 'frustrated', 'hate'],
+        'calm': ['calm', 'peaceful', 'relaxed', 'chill', 'serene', 'tranquil', 'zen', 'meditation'],
+        'energetic': ['energetic', 'pumped', 'hyped', 'active', 'dynamic', 'workout', 'dance', 'party', 'intense']
     }
     
     text_lower = text.lower()
     detected_emotions = []
     
+    # Detect emotions from keywords
     for emotion, keywords in emotion_keywords.items():
         if any(keyword in text_lower for keyword in keywords):
             detected_emotions.append(emotion)
     
-    # Default emotions if none detected
-    if not detected_emotions:
-        detected_emotions = ['neutral']
-    
-    # Simple sentiment analysis
-    positive_words = ['good', 'great', 'awesome', 'love', 'like', 'happy', 'amazing']
-    negative_words = ['bad', 'hate', 'terrible', 'awful', 'sad', 'angry']
+    # Enhanced sentiment analysis
+    positive_words = ['good', 'great', 'awesome', 'love', 'like', 'happy', 'amazing', 'wonderful', 'fantastic', 'excellent']
+    negative_words = ['bad', 'hate', 'terrible', 'awful', 'sad', 'angry', 'worst', 'horrible', 'depressed']
     
     pos_count = sum(1 for word in positive_words if word in text_lower)
     neg_count = sum(1 for word in negative_words if word in text_lower)
@@ -38,6 +35,15 @@ def analyze_text(text):
         sentiment = 'negative'
     else:
         sentiment = 'neutral'
+    
+    # Default emotions if none detected
+    if not detected_emotions:
+        if sentiment == 'positive':
+            detected_emotions = ['happy']
+        elif sentiment == 'negative':
+            detected_emotions = ['sad']
+        else:
+            detected_emotions = ['neutral']
     
     # Generate search keywords
     search_keywords = detected_emotions + [sentiment]
