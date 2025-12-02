@@ -79,34 +79,65 @@ def search_tracks(token, analysis_results):
             else:
                 keyword_groups.append(keywords[i])
     else:
-        keyword_groups = keywords
     
     # Add emotion-specific keywords if we have emotions
     if top_emotions:
-        keyword_groups.append(f"{top_emotions[0]} {sentiment}")
+        # Add emotion and sentiment to keywords for potential search
+        keywords.append(f"{top_emotions[0]} {sentiment}")
+    
+    # Search for tracks using multiple keyword combinations to get more results
+    all_tracks = []
+    
+    # Create multiple search queries for better coverage
+    search_queries = []
+    
+    # Primary search with main keywords
+    primary_query = ' '.join(keywords[:3])
+    if primary_query:
+        search_queries.append(primary_query)
+    
+    # Add individual keyword searches for more variety
+    for keyword in keywords[:3]:
+        if keyword and keyword not in ['neutral', 'positive', 'negative']:  # Skip generic terms
+            search_queries.append(keyword)
+    
+    # Ensure there's at least one query, even if keywords were empty
+    if not search_queries and top_emotions:
+        search_queries.append(f"{top_emotions[0]} {sentiment}")
+    elif not search_queries:
+        search_queries.append("mood music") # Fallback if no keywords or emotions
     
     # Limit to prevent too many API calls
-    keyword_groups = keyword_groups[:3]
+    search_queries = list(set(search_queries))[:5] # Remove duplicates and limit queries
     
-    # Execute searches
-    for query in keyword_groups:
+    # Search with each query
+    for query in search_queries:
         params = {
-            "q": query,
-            "type": "track",
-            "limit": 10
+            'q': query,
+            'type': 'track',
+            'limit': 20,  # Increased from 10 to get more results
+            'market': 'US'
         }
         
-        response = requests.get(base_url, headers=headers, params=params)
-        json_result = response.json()
+        response = requests.get(
+            f"{SPOTIFY_API_BASE_URL}/search",
+            headers=headers,
+            params=params
+        )
         
+        if response.status_code != 200:
+            continue
+            
+        json_result = response.json()
         if "tracks" in json_result and "items" in json_result["tracks"]:
             all_tracks.extend(json_result["tracks"]["items"])
     
     # Remove duplicates and format results with smart popularity fallback
     unique_track_ids = set()
     
-    # Try different popularity thresholds (80 → 70 → 60)
-    for min_popularity in [80, 70, 60]:
+    # Try different popularity thresholds (70 → 60 → 50)
+    # Adjusted to get more results while keeping quality
+    for min_popularity in [70, 60, 50]:
         recommendations = []
         
         for track in all_tracks:
@@ -131,8 +162,8 @@ def search_tracks(token, analysis_results):
                 }
                 recommendations.append(track_data)
         
-        # If we found enough songs (at least 5), stop trying lower thresholds
-        if len(recommendations) >= 5:
+        # If we found enough songs (at least 8), stop trying lower thresholds
+        if len(recommendations) >= 8:
             break
     
     # If still no results, return any songs without popularity filter
