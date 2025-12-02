@@ -1,5 +1,6 @@
 # backend/spotify.py
 import requests
+import base64
 import os
 import random
 
