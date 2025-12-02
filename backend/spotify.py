@@ -1,7 +1,10 @@
 # backend/spotify.py
 import requests
-import base64
+import os
 import random
+
+# Spotify API Base URL
+SPOTIFY_API_BASE_URL = "https://api.spotify.com/v1"
 
 def get_spotify_token(client_id, client_secret):
     """
