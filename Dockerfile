@@ -9,6 +9,8 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 COPY backend/ ./
 
-# Railway will provide PORT environment variable, default to 8080
-# Use shell form to properly expand variables
-CMD gunicorn app:app --bind 0.0.0.0:${PORT:-8080} --workers 2 --timeout 120 --log-level info
+# Make entrypoint executable
+RUN chmod +x entrypoint.sh
+
+# Use entrypoint script
+CMD ["sh", "entrypoint.sh"]
