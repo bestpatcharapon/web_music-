@@ -107,6 +107,11 @@ def search_tracks(token, analysis_results):
     recommendations = []
     
     for track in all_tracks:
+        # Filter by popularity (only megahit songs > 80)
+        # This ensures we get songs from top artists like Post Malone, Drake, The Weeknd, etc.
+        if track.get("popularity", 0) < 80:
+            continue
+            
         if track["id"] not in unique_track_ids:
             unique_track_ids.add(track["id"])
             
@@ -119,10 +124,13 @@ def search_tracks(token, analysis_results):
                 "preview_url": track["preview_url"],
                 "external_url": track["external_urls"]["spotify"],
                 "image_url": track["album"]["images"][1]["url"] if track["album"]["images"] else None,
-                "uri": track["uri"]
+                "uri": track["uri"],
+                "popularity": track.get("popularity", 0)
             }
             recommendations.append(track_data)
     
-    # Shuffle and limit the results
-    random.shuffle(recommendations)
-    return recommendations[:10]  # Return top 10 recommendations
+    # Sort by popularity (highest first) to get the biggest hits
+    recommendations.sort(key=lambda x: x['popularity'], reverse=True)
+    
+    # Return top 10 most popular tracks
+    return recommendations[:10]
