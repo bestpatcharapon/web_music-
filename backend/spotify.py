@@ -102,32 +102,56 @@ def search_tracks(token, analysis_results):
         if "tracks" in json_result and "items" in json_result["tracks"]:
             all_tracks.extend(json_result["tracks"]["items"])
     
-    # Remove duplicates and format results
+    # Remove duplicates and format results with smart popularity fallback
     unique_track_ids = set()
-    recommendations = []
     
-    for track in all_tracks:
-        # Filter by popularity (only megahit songs > 80)
-        # This ensures we get songs from top artists like Post Malone, Drake, The Weeknd, etc.
-        if track.get("popularity", 0) < 80:
-            continue
-            
-        if track["id"] not in unique_track_ids:
-            unique_track_ids.add(track["id"])
-            
-            # Format track data
-            track_data = {
-                "id": track["id"],
-                "name": track["name"],
-                "artist": track["artists"][0]["name"],
-                "album": track["album"]["name"],
-                "preview_url": track["preview_url"],
-                "external_url": track["external_urls"]["spotify"],
-                "image_url": track["album"]["images"][1]["url"] if track["album"]["images"] else None,
-                "uri": track["uri"],
-                "popularity": track.get("popularity", 0)
-            }
-            recommendations.append(track_data)
+    # Try different popularity thresholds (80 → 70 → 60)
+    for min_popularity in [80, 70, 60]:
+        recommendations = []
+        
+        for track in all_tracks:
+            # Filter by current popularity threshold
+            if track.get("popularity", 0) < min_popularity:
+                continue
+                
+            if track["id"] not in unique_track_ids:
+                unique_track_ids.add(track["id"])
+                
+                # Format track data
+                track_data = {
+                    "id": track["id"],
+                    "name": track["name"],
+                    "artist": track["artists"][0]["name"],
+                    "album": track["album"]["name"],
+                    "preview_url": track["preview_url"],
+                    "external_url": track["external_urls"]["spotify"],
+                    "image_url": track["album"]["images"][1]["url"] if track["album"]["images"] else None,
+                    "uri": track["uri"],
+                    "popularity": track.get("popularity", 0)
+                }
+                recommendations.append(track_data)
+        
+        # If we found enough songs (at least 5), stop trying lower thresholds
+        if len(recommendations) >= 5:
+            break
+    
+    # If still no results, return any songs without popularity filter
+    if not recommendations:
+        for track in all_tracks:
+            if track["id"] not in unique_track_ids:
+                unique_track_ids.add(track["id"])
+                track_data = {
+                    "id": track["id"],
+                    "name": track["name"],
+                    "artist": track["artists"][0]["name"],
+                    "album": track["album"]["name"],
+                    "preview_url": track["preview_url"],
+                    "external_url": track["external_urls"]["spotify"],
+                    "image_url": track["album"]["images"][1]["url"] if track["album"]["images"] else None,
+                    "uri": track["uri"],
+                    "popularity": track.get("popularity", 0)
+                }
+                recommendations.append(track_data)
     
     # Sort by popularity (highest first) to get the biggest hits
     recommendations.sort(key=lambda x: x['popularity'], reverse=True)
