@@ -12,13 +12,14 @@ load_dotenv()
 
 app = Flask(__name__)
 
-# Update CORS for production
-if os.environ.get('RAILWAY_ENVIRONMENT'):
-    # In production, allow your Vercel domain
-    CORS(app, origins=['https://*.vercel.app', 'https://your-app-name.vercel.app'])
-else:
-    # In development, allow all origins
-    CORS(app)
+# Enable CORS for all origins (including Vercel)
+CORS(app, resources={
+    r"/api/*": {
+        "origins": "*",
+        "methods": ["GET", "POST", "OPTIONS"],
+        "allow_headers": ["Content-Type"]
+    }
+})
 
 # Initialize Spotify credentials
 client_id = os.environ.get('SPOTIFY_CLIENT_ID')
